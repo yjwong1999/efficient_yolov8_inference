@@ -32,7 +32,7 @@ sudo snap install vlc
 ```
 python3 single_detect.py --webcam
 python3 single_detect.py --camera 0
-python3 single_detect.py --video-file dataset_cam1.mp4
+python3 single_detect.py --video-file sample_video.mp4
 python3 single_detect.py --rtsp "rtsp://192.168.1.136:8554/"
 python3 single_detect.py --youtube "http://www.youtube.com/watch?v=q0kPBRIPm6o"
 ```
