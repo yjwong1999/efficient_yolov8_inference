@@ -7,29 +7,35 @@ import argparse
 
 # get input argument
 parser = argparse.ArgumentParser()
-parser.add_argument('--webcam', action='store_true', help='if using webcam')          # webcam usually is 0
+parser.add_argument('--webcam', type=int, default=None, help='webcam port number')    # webcam usually is 0
 parser.add_argument('--video-file', type=str, default=None, help='video filenames')   # example: "dataset_cam1.mp4"
-parser.add_argument('--youtube', type=str, default=None, help='youtube link')         # example: "http://www.youtube.com/watch?v=q0kPBRIPm6o" # need ssl to be set
 parser.add_argument('--rtsp', type=str, default=None, help='rtsp link')               # example: "rtsp://192.168.1.136:8554/"
+parser.add_argument('--youtube', type=str, default=None, help='youtube link')         # example: "http://www.youtube.com/watch?v=q0kPBRIPm6o"
 opt = parser.parse_args()
 
 # Define the source
-WEBCAM = 0  # Use "samples/v1.mp4" for a video file
+WEBCAM = opt.webcam
 VIDEO_FILE = opt.video_file
-YOUTUBE = "http://www.youtube.com/watch?v=q0kPBRIPm6o" # need ssl to be set
-RTSP = 'rtsp://192.168.1.136:8554/'
+RTSP = opt.rtsp
+YOUTUBE = opt.youtube # need ssl to be set
 
-# Initialize video capture
-# cap = cv2.VideoCapture(WEBCAM)
 
-# video = pafy.new(YOUTUBE)
-# best = video.getbest(preftype="mp4")
-# cap = cv2.VideoCapture(best.url)
+# load video source
+if WEBCAM:
+   cap = cv2.VideoCapture(WEBCAM) # usually webcam is 0
+elif VIDEO_FILE:
+   cap = cv2.VideoCapture(VIDEO_FILE)
+elif RTSP"
+   cap = cv2.VideoCapture(RTSP)
+elif YOUTUBE:
+   video = pafy.new(YOUTUBE)
+   best = video.getbest(preftype="mp4")
+   cap = cv2.VideoCapture(best.url)   
+else:
+   assert False, "You do not specificy input video source!"
 
-# cap = cv2.VideoCapture(VIDEO_FILE)
 
-cap = cv2.VideoCapture(RTSP)
-
+# resize your input video frame size (smaller -> faster, but less accurate)
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 resize_width = 1280   # Adjust based on your needs
@@ -41,6 +47,8 @@ if frame_width > 0:
 # Load the YOLO model
 chosen_model = YOLO("yolov8n_face.pt")  # Adjust model version as needed
 
+
+# predict
 def predict(chosen_model, img, classes=[], conf=0.5):
    #resiz the image to 640x480
    img = cv2.resize(img, (resize_width, resize_height))
@@ -50,6 +58,9 @@ def predict(chosen_model, img, classes=[], conf=0.5):
        results = chosen_model.predict(img, conf=conf, save_txt=False)
 
    return results
+
+
+# predict and detect
 def predict_and_detect(chosen_model, img, classes=[], conf=0.5):
    # resiz the image to 640x480
    img = cv2.resize(img, (resize_width, resize_height))
@@ -71,10 +82,15 @@ def predict_and_detect(chosen_model, img, classes=[], conf=0.5):
                        (int(box.xyxy[0][0]), int(box.xyxy[0][1]) - 10),
                        cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
    return img, results
+
+
+# process frame
 def process_frame(frame):
    result_frame, _ = predict_and_detect(chosen_model, frame)
    return result_frame
 
+
+# main
 def main():
    skip_frames = 2  # Number of frames to skip before processing the next one
    frame_count = 0
