@@ -37,6 +37,11 @@ python3 single_detect.py --rtsp "rtsp://192.168.1.136:8554/"
 python3 single_detect.py --youtube "http://www.youtube.com/watch?v=q0kPBRIPm6o"
 ```
 
+## Multi stream detection
+```
+python3 multi_detect.py
+```
+
 ## BUGS
 - cannot play youtube yet
 
