@@ -25,7 +25,7 @@ if WEBCAM:
    cap = cv2.VideoCapture(WEBCAM) # usually webcam is 0
 elif VIDEO_FILE:
    cap = cv2.VideoCapture(VIDEO_FILE)
-elif RTSP"
+elif RTSP:
    cap = cv2.VideoCapture(RTSP)
 elif YOUTUBE:
    video = pafy.new(YOUTUBE)
