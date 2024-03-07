@@ -7,13 +7,15 @@ import argparse
 
 # get input argument
 parser = argparse.ArgumentParser()
-parser.add_argument('--webcam', action='store_true',
-                  help='if using webcam')
+parser.add_argument('--webcam', action='store_true', help='if using webcam')          # webcam usually is 0
+parser.add_argument('--video-file', type=str, default=None, help='video filenames')   # example: "dataset_cam1.mp4"
+parser.add_argument('--youtube', type=str, default=None, help='youtube link')         # example: "http://www.youtube.com/watch?v=q0kPBRIPm6o" # need ssl to be set
+parser.add_argument('--rtsp', type=str, default=None, help='rtsp link')               # example: "rtsp://192.168.1.136:8554/"
 opt = parser.parse_args()
 
 # Define the source
 WEBCAM = 0  # Use "samples/v1.mp4" for a video file
-VIDEO_FILE = "dataset_cam1.mp4"
+VIDEO_FILE = opt.video_file
 YOUTUBE = "http://www.youtube.com/watch?v=q0kPBRIPm6o" # need ssl to be set
 RTSP = 'rtsp://192.168.1.136:8554/'
 
