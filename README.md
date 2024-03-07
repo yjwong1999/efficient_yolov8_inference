@@ -5,6 +5,9 @@ Conda environment
 ```
 conda create --name yolo python=3.8.10 -y
 conda activate yolo
+
+git clone https://github.com/yjwong1999/efficient_yolov8_inference.git
+cd efficient_yolov8_inference
 ```
 
 Install dependencies
