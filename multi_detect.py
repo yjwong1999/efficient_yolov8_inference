@@ -16,29 +16,35 @@ def main():
         sources = f.readlines()
     sources = [item.strip("\n") for item in sources]
 
-    # define list to store all commands and threads
-    commands = []
+    # define list to store all threads
     threads  = []
 
     # loop all source
     for source in sources:
-        
-        
-    # Define your command (replace 'abc.py' with the actual script name)
-    command1 = "python3 single_detect.py --video-file dataset_cam1.mp4"
-    command2 = "python3 single_detect.py --webcam"
+        # command
+        try:
+            source = int(source)
+            command = f"python3 single_detect.py --camera {source}"
+        except:
+            if source.endswith('.mp4'):
+                command = f'python3 single_detect.py --video-file "{source}"'
+            elif source.startswith('rtsp'):
+                command = f'python3 single_detect.py --rtsp "{source}"'
+            elif source.startswith('http://www.youtube.com'):
+                command = f'python3 single_detect.py --youtube "{source}"'
+            else:
+                raise NotImplementedError
+        # thread
+        thread = threading.Thread(target=run_command, args=(command,))
+        threads.append(thread)        
 
-    # Create two threads
-    thread1 = threading.Thread(target=run_command, args=(command1,))
-    thread2 = threading.Thread(target=run_command, args=(command2,))
+    # Start all threads
+    for thread in threads:
+        thread.start()
 
-    # Start both threads
-    thread1.start()
-    thread2.start()
-
-    # Wait for both threads to finish
-    thread1.join()
-    thread2.join()
+    # Wait for all threads to finish
+    for thread in threads:
+        thread.join()
 
 if __name__ == "__main__":
     main()
