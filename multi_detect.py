@@ -32,7 +32,7 @@ def main():
                 command = f'python3 single_detect.py --rtsp "{source}"'
             elif source.startswith('http://www.youtube.com'):
                 command = f'python3 single_detect.py --youtube "{source}"'
-            elif sources.rstrip() == '':
+            elif source.rstrip() == '':
                 print('please prevent empty lines in source.streams')
                 continue
             else:
