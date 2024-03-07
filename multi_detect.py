@@ -28,4 +28,8 @@ def main():
     thread2.join()
 
 if __name__ == "__main__":
+    with open("source.streams","r") as f:
+        lines = f.readlines()
+    print(lines)
+
     main()
