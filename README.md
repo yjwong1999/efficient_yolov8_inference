@@ -1,5 +1,7 @@
 # Efficient YOLOv8 Inference
 
+Optimization: Parallel Processing
+
 ## Setup
 Conda environment
 ```
