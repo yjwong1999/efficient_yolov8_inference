@@ -5,9 +5,11 @@ import concurrent.futures
 
 import argparse
 
+# get input argument
 parser = argparse.ArgumentParser()
-parser.add_argument('--half', action='store_true',
-                  help='use FP16 half-precision inference')
+parser.add_argument('--webcam', action='store_true',
+                  help='if using webcam')
+opt = parser.parse_args()
 
 # Define the source
 WEBCAM = 0  # Use "samples/v1.mp4" for a video file
