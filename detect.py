@@ -6,6 +6,7 @@ import concurrent.futures
 WEBCAM = 0  # Use "samples/v1.mp4" for a video file
 VIDEO_FILE = "dataset_cam1.mp4"
 YOUTUBE = "http://www.youtube.com/watch?v=q0kPBRIPm6o" # need ssl to be set
+RTSP = 'rtsp://192.168.1.136:8554/'
 
 # Initialize video capture
 # cap = cv2.VideoCapture(WEBCAM)
@@ -14,7 +15,9 @@ YOUTUBE = "http://www.youtube.com/watch?v=q0kPBRIPm6o" # need ssl to be set
 # best = video.getbest(preftype="mp4")
 # cap = cv2.VideoCapture(best.url)
 
-cap = cv2.VideoCapture(VIDEO_FILE)
+# cap = cv2.VideoCapture(VIDEO_FILE)
+
+cap = cv2.VideoCapture(RTSP)
 
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
