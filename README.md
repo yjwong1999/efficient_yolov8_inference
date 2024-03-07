@@ -28,7 +28,8 @@ python3 find_port.py
 sudo snap install vlc
 ```
 
-## Single stream detection
+## Detection
+Single stream detection
 ```
 python3 single_detect.py --webcam
 python3 single_detect.py --camera 0
@@ -37,9 +38,24 @@ python3 single_detect.py --rtsp "rtsp://192.168.1.136:8554/"
 python3 single_detect.py --youtube "http://www.youtube.com/watch?v=q0kPBRIPm6o"
 ```
 
-## Multi stream detection
+Multi stream detection
 ```
 python3 multi_detect.py
+```
+
+## Tracking
+Single stream tracking
+```
+python3 single_track.py --webcam
+python3 single_track.py --camera 0
+python3 single_track.py --video-file sample_video.mp4
+python3 single_track.py --rtsp "rtsp://192.168.1.136:8554/"
+python3 single_track.py --youtube "http://www.youtube.com/watch?v=q0kPBRIPm6o"
+```
+
+Multi stream tracking
+```
+python3 multi_track.py
 ```
 
 ## BUGS
