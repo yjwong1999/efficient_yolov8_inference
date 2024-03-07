@@ -8,7 +8,7 @@ import argparse
 # get input argument
 parser = argparse.ArgumentParser()
 parser.add_argument('--webcam', action='store_true', help='use webcam')               # webcam usually is 0
-parser.add_argument('--camera', type=int, default=None, help='camera port number')    # you can find it
+parser.add_argument('--camera', type=int, default=None, help='camera port number')    # you can find it using find_port.py
 parser.add_argument('--video-file', type=str, default=None, help='video filenames')   # example: "dataset_cam1.mp4"
 parser.add_argument('--rtsp', type=str, default=None, help='rtsp link')               # example: "rtsp://192.168.1.136:8554/"
 parser.add_argument('--youtube', type=str, default=None, help='youtube link')         # example: "http://www.youtube.com/watch?v=q0kPBRIPm6o"
