@@ -20,6 +20,11 @@ pip install youtube-dl==2021.12.17
 python3 find_port.py
 ```
 
+## Install VLC player to simulate rtsp streaming
+```
+sudo snap install vlc
+```
+
 ## Single stream detection
 ```
 python3 single_detect.py --webcam
