@@ -25,7 +25,7 @@ if frame_width > 0:
 
 
 # Load the YOLO model
-chosen_model = YOLO("yolov8n.pt")  # Adjust model version as needed
+chosen_model = YOLO("yolov8n_face.pt")  # Adjust model version as needed
 
 def predict(chosen_model, img, classes=[], conf=0.5):
    #resiz the image to 640x480
