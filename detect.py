@@ -3,6 +3,8 @@ import cv2
 import pafy
 import concurrent.futures
 
+import argparse
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--half', action='store_true',
                   help='use FP16 half-precision inference')
