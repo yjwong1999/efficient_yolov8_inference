@@ -2,6 +2,11 @@ from ultralytics import YOLO
 import cv2
 import pafy
 import concurrent.futures
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--half', action='store_true',
+                  help='use FP16 half-precision inference')
+
 # Define the source
 WEBCAM = 0  # Use "samples/v1.mp4" for a video file
 VIDEO_FILE = "dataset_cam1.mp4"
