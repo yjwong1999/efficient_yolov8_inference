@@ -1,4 +1,4 @@
-# Efficient YOLOv8 Inference
+# Efficient YOLOv8 Inferencing using Multithreading
 
 Efficient YOLOv8 inference depends not only on GPU specifications but also on CPU processing. However, the significance of fully utilizing the CPU is often overlooked. In fact, leveraging the CPU is crucial because it plays an essential role in the I/O aspect of model deployment (specifically, reading input frames and plotting the outputs). In this repository, we explore how to utilize CPU multi-threading to enhance inference speed.
 
