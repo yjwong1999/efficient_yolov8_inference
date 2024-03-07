@@ -6,6 +6,6 @@ authors:
   orcid: "https://orcid.org/0000-0003-4598-2653"
 title: "Efficient YOLOv8 Inferencing using Multithreading"
 version: 1.0.0
-doi: 10.5281/zenodo.1234
+doi: 10.5281/zenodo.10792741
 date-released: 2024-03-07
 url: "https://github.com/yjwong1999/efficient_yolov8_inference"
