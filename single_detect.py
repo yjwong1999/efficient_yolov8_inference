@@ -1,7 +1,10 @@
 from ultralytics import YOLO
 import cv2
+import numpy as np
 import pafy
 import concurrent.futures
+
+from collections import defaultdict
 
 import argparse
 
@@ -57,40 +60,46 @@ def predict(chosen_model, img, classes=[], conf=0.5):
    #resiz the image to 640x480
    img = cv2.resize(img, (resize_width, resize_height))
    if classes:
-       results = chosen_model.predict(img, classes=classes, conf=conf, save_txt=False)
+       results = chosen_model.track(img, classes=classes, conf=conf, save_txt=False, persist=True)
    else:
-       results = chosen_model.predict(img, conf=conf, save_txt=False)
+       results = chosen_model.track(img, conf=conf, save_txt=False, persist=True)
 
    return results
 
 
 # predict and detect
-def predict_and_detect(chosen_model, img, classes=[], conf=0.5):
+def predict_and_detect(chosen_model, track_history, img, classes=[], conf=0.5):
    # resiz the image to 640x480
    img = cv2.resize(img, (resize_width, resize_height))
    results = predict(chosen_model, img, classes, conf=conf)
 
-   for result in results:
-       for box in result.boxes:
-           #if lable is person make the box greeen and print confidence level on the box in huge font
-           if result.names[int(box.cls[0])] == "person":
-               cv2.rectangle(img, (int(box.xyxy[0][0]), int(box.xyxy[0][1])),
-                         (int(box.xyxy[0][2]), int(box.xyxy[0][3])), (0, 255, 0), 2)
-               cv2.putText(img, f"{result.names[int(box.cls[0])]} {box.conf[0]:.2f}",
-                       (int(box.xyxy[0][0]), int(box.xyxy[0][1]) - 10),
-                       cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 1)
-           else:
-               cv2.rectangle(img, (int(box.xyxy[0][0]), int(box.xyxy[0][1])),
-                         (int(box.xyxy[0][2]), int(box.xyxy[0][3])), (0, 0, 255), 2)
-               cv2.putText(img, f"{result.names[int(box.cls[0])]} {box.conf[0]:.2f}",
-                       (int(box.xyxy[0][0]), int(box.xyxy[0][1]) - 10),
-                       cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
-   return img, results
+   # Get the boxes and track IDs
+   boxes = results[0].boxes.xywh.cpu()
+   try:
+      track_ids = results[0].boxes.id.int().cpu().tolist()
+   except:
+      return img, results
+
+   # visualize
+   annotated_frame = results[0].plot()
+   for box, track_id in zip(boxes, track_ids):
+      x, y, w, h = box
+      track = track_history[track_id]
+      track.append((float(x), float(y)))  # x, y center point
+      if len(track) > 30:  # retain 90 tracks for 90 frames
+         track.pop(0)
+
+      # Draw the tracking lines
+      # points = np.hstack(track).astype(np.int32).reshape((-1, 1, 2))
+      # cv2.polylines(annotated_frame, [points], isClosed=False, color=(230, 230, 230), thickness=10)
+
+
+   return annotated_frame, results
 
 
 # process frame
-def process_frame(frame):
-   result_frame, _ = predict_and_detect(chosen_model, frame)
+def process_frame(track_history, frame):
+   result_frame, _ = predict_and_detect(chosen_model, track_history, frame)
    return result_frame
 
 
@@ -98,6 +107,10 @@ def process_frame(frame):
 def main():
    skip_frames = 2  # Number of frames to skip before processing the next one
    frame_count = 0
+
+   # Store the track history
+   track_history = defaultdict(lambda: [])
+
    with concurrent.futures.ThreadPoolExecutor() as executor:
        while True:
            ret, frame = cap.read()
@@ -108,7 +121,7 @@ def main():
                continue  # Skip this frame
 
            # Submit the frame for processing
-           future = executor.submit(process_frame, frame)
+           future = executor.submit(process_frame, track_history, frame)
            result_frame = future.result()
 
            # Display the processed frame
