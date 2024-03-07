@@ -11,6 +11,19 @@ def run_command(command):
         print(f"Error executing command: {e}")
 
 def main():
+    # read source streams 
+    with open("source.streams","r") as f:
+        sources = f.readlines()
+    sources = [item.strip("\n") for item in sources]
+
+    # define list to store all commands and threads
+    commands = []
+    threads  = []
+
+    # loop all source
+    for source in sources:
+        
+        
     # Define your command (replace 'abc.py' with the actual script name)
     command1 = "python3 single_detect.py --video-file dataset_cam1.mp4"
     command2 = "python3 single_detect.py --webcam"
@@ -28,8 +41,4 @@ def main():
     thread2.join()
 
 if __name__ == "__main__":
-    with open("source.streams","r") as f:
-        lines = f.readlines()
-    print(lines)
-
     main()
