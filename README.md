@@ -31,3 +31,8 @@ python3 single_detect.py --youtube "http://www.youtube.com/watch?v=q0kPBRIPm6o"
 
 ## BUGS
 - cannot play youtube yet
+
+
+## Acknowledgement
+1. ultralytics official repo
+2. multi-thread for multi-stream detection [[ref]](https://ultralytics.medium.com/object-tracking-across-multiple-streams-using-ultralytics-yolov8-7934618ddd2)
