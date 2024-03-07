@@ -1,6 +1,6 @@
 import cv2 # Import OpenCV Library
 from ultralytics import YOLO # Import Ultralytics Package
-
+import concurrent.futures
 import threading # Threading module import
 
 # Define the video files for the trackers
@@ -10,6 +10,53 @@ video_file2 = 0  # WebCam Path
 # Load the YOLOv8 models
 model1 = YOLO("yolov8n.pt") # YOLOv8n Model
 model2 = YOLO("yolov8n_face.pt") # YOLOv8s Model
+
+resize_width = 1280   # Adjust based on your needs
+resize_height = 720  # Adjust based on your needs
+
+# predict
+def predict(chosen_model, img, classes=[], conf=0.5):
+   #resiz the image to 640x480
+   img = cv2.resize(img, (resize_width, resize_height))
+   if classes:
+       results = chosen_model.predict(img, classes=classes, conf=conf, save_txt=False)
+   else:
+       results = chosen_model.predict(img, conf=conf, save_txt=False)
+
+   return results
+
+
+# predict and detect
+def predict_and_detect(chosen_model, img, classes=[], conf=0.5):
+   # resiz the image to 640x480
+   img = cv2.resize(img, (resize_width, resize_height))
+   results = predict(chosen_model, img, classes, conf=conf)
+
+   for result in results:
+       for box in result.boxes:
+           #if lable is person make the box greeen and print confidence level on the box in huge font
+           if result.names[int(box.cls[0])] == "person":
+               cv2.rectangle(img, (int(box.xyxy[0][0]), int(box.xyxy[0][1])),
+                         (int(box.xyxy[0][2]), int(box.xyxy[0][3])), (0, 255, 0), 2)
+               cv2.putText(img, f"{result.names[int(box.cls[0])]} {box.conf[0]:.2f}",
+                       (int(box.xyxy[0][0]), int(box.xyxy[0][1]) - 10),
+                       cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 1)
+           else:
+               cv2.rectangle(img, (int(box.xyxy[0][0]), int(box.xyxy[0][1])),
+                         (int(box.xyxy[0][2]), int(box.xyxy[0][3])), (0, 0, 255), 2)
+               cv2.putText(img, f"{result.names[int(box.cls[0])]} {box.conf[0]:.2f}",
+                       (int(box.xyxy[0][0]), int(box.xyxy[0][1]) - 10),
+                       cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1)
+   return img, results
+
+
+# process frame
+def process_frame(inputs):
+   model, frame = inputs
+   result_frame, _ = predict_and_detect(model, frame)
+   return result_frame
+
+
 
 def run_tracker_in_thread(filename, model, file_index):
     """
@@ -23,26 +70,30 @@ def run_tracker_in_thread(filename, model, file_index):
     file being processed.
     """
 
-    video = cv2.VideoCapture(filename)  # Read the video file
+    cap = cv2.VideoCapture(filename)  # Read the video file
+    skip_frames = 2  # Number of frames to skip before processing the next one
+    frame_count = 0
 
-    while True:
-        ret, frame = video.read()  # Read the video frames
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+               break
+            frame_count = 1+frame_count
+            if frame_count % skip_frames != 0:
+                continue  # Skip this frame
 
-        # Exit the loop if no more frames in either video
-        if not ret:
-            break
+            # Submit the frame for processing
+            future = executor.submit(process_frame, (model, frame,))
+            result_frame = future.result()
 
-        # Track objects in frames if available
-        results = model.track(frame, persist=True)
-        res_plotted = results[0].plot()
-        cv2.imshow("Tracking_Stream_"+str(file_index), res_plotted)
+            # Display the processed frame
+            cv2.imshow("Processed Frame", result_frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
-        key = cv2.waitKey(1)
-        if key == ord("q"):
-            break
-
-    # Release video sources
-    video.release()
+    cap.release()
+    cv2.destroyAllWindows()
 	
 # Create the tracker thread
 
