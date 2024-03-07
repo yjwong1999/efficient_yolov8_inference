@@ -25,7 +25,7 @@ YOUTUBE = opt.youtube # need ssl to be set
 # load video source
 if WEBCAM:
    cap = cv2.VideoCapture(0) # usually webcam is 0
-elif CAMERA:
+elif CAMERA is not None: 
    cap = cv2.VideoCapture(CAMERA)
 elif VIDEO_FILE:
    cap = cv2.VideoCapture(VIDEO_FILE)
