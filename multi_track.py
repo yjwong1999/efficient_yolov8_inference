@@ -33,8 +33,9 @@ def main():
             handler = DriveHandler()
             handler.post()
             del handler    
-        except:
-            pass
+        except Exception as e:
+            print(e)
+            input('Please type anything to continue')
 
     # define list to store all threads
     threads  = []
