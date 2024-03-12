@@ -74,8 +74,10 @@ python3 multi_track.py
 python3 multi_track.py --geofencing
 ```
 
-## BUGS
-- cannot play youtube yet
+## TODO
+- [ ] cannot play youtube yet
+- [ ] drive handling fails for multiple source
+- [ ] TBA
 
 ## Citation
 ```
