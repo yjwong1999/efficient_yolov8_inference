@@ -23,7 +23,17 @@ def main():
 
     # assertion
     if len(geofencings) != 0:
+        # make sure the geofencing ROI are correct
         assert len(sources) == len(geofencings), 'Please provide the corresponding geofencing ROI for each video streaming source'
+
+        # try if drive utility function is working
+        try:
+            from drive_utils.wrapper import DriveHandler
+            handler = DriveHandler()
+            handler.post()
+            del handler    
+        except:
+            pass
 
     # define list to store all threads
     threads  = []
