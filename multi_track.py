@@ -29,10 +29,10 @@ def main():
         # try if drive utility function is working
         # before multithreading
         try:
-            from drive_utils.wrapper import DriveHandler
-            handler = DriveHandler()
-            handler.post()
-            del handler    
+            from counter import Counter
+            counter = Counter()
+            counter.drive_handler.post()
+            del counter    
         except Exception as e:
             print(e)
             input('Please type anything to continue')
