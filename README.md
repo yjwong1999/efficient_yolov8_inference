@@ -77,6 +77,7 @@ python3 multi_track.py --geofencing
 ## TODO
 - [ ] cannot play youtube yet
 - [ ] drive handling fails for multiple source
+- [ ] no error warning when the video source is not available, not sure this will happen for other source types onot
 - [ ] the dummy handler in multi_track.py will post() today, should post tmr only
 
 ## Citation
