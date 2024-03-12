@@ -37,7 +37,8 @@ def main(opt):
         del counter                    # delete the dummy counter
     except Exception as e:
         print(e)
-        input('Please type anything to continue')
+        import time
+        time.sleep(3)
 
     # define list to store all threads
     threads  = []
