@@ -27,6 +27,7 @@ def main():
         assert len(sources) == len(geofencings), 'Please provide the corresponding geofencing ROI for each video streaming source'
 
         # try if drive utility function is working
+        # before multithreading
         try:
             from drive_utils.wrapper import DriveHandler
             handler = DriveHandler()
