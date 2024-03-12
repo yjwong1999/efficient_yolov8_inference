@@ -48,16 +48,24 @@ python3 multi_detect.py
 ## Tracking
 Single stream tracking
 ```
+# Example (without geofencing)
 python3 single_track.py --webcam
 python3 single_track.py --camera 0
 python3 single_track.py --video-file sample_video.mp4
 python3 single_track.py --rtsp "rtsp://192.168.1.136:8554/"
 python3 single_track.py --youtube "http://www.youtube.com/watch?v=q0kPBRIPm6o"
+
+# Example (with geofencing)
+python3 single_track.py -video-file sample_video.mp4 --roi-xyxy 0.6,0.4,0.9,0.8
 ```
 
 Multi stream tracking
 ```
+# without geofencing
 python3 multi_track.py
+
+# with geofencing
+python3 multi_track.py --geofencing
 ```
 
 ## BUGS
