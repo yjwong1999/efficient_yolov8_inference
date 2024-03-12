@@ -32,9 +32,9 @@ def main(opt):
     # before multithreading
     try:
         from counter import Counter
-        counter = Counter(0,0,0,0,0)   # init a dummy counter
-        counter.drive_handler.post()   # try posting smtg to see if API working
-        del counter                    # delete the dummy counter
+        counter = Counter(0,0,0,0,0)    # init a dummy counter
+        counter.drive_handler.post()    # try posting smtg to see if API working
+        del counter                     # delete the dummy counter
     except Exception as e:
         print(e)
         import time
