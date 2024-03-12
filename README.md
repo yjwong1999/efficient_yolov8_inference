@@ -18,7 +18,6 @@ pip3 install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 --index-url http
 pip install ultralytics==8.1.24
 pip install pip install pafy==0.5.5
 pip install youtube-dl==2021.12.17
-pip install numpy==1.24.1
 ```
 
 ## Find port number connected to camera

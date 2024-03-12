@@ -11,27 +11,36 @@ def run_command(command):
         print(f"Error executing command: {e}")
 
 def main():
-    # read source streams 
+    # read source.streams 
     with open("source.streams","r") as f:
         sources = f.readlines()
     sources = [item.strip("\n") for item in sources]
+
+    # read geofencing.streams 
+    with open("geofencing.streams","r") as f:
+        geofencings = f.readlines()
+    geofencings = [item.strip("\n") for item in geofencings]    
+
+    # assertion
+    if len(geofencings) != 0:
+        assert len(sources) == len(geofencings), 'Please provide the corresponding geofencing ROI for each video streaming source'
 
     # define list to store all threads
     threads  = []
 
     # loop all source
-    for source in sources:
+    for stream_idx, (source, geofencing) in enumerate(zip(sources, geofencings)):
         # command
         try:
             source = int(source)
-            command = f"python3 single_track.py --camera {source}"
+            command = f'python3 single_track.py --camera {source} --stream-idx {stream_idx} --roi-xyxy "{geofencing}"'
         except:
             if source.endswith('.mp4'):
-                command = f'python3 single_track.py --video-file "{source}"'
+                command = f'python3 single_track.py --video-file "{source}" --stream-idx {stream_idx} --roi-xyxy "{geofencing}"'
             elif source.startswith('rtsp'):
-                command = f'python3 single_track.py --rtsp "{source}"'
+                command = f'python3 single_track.py --rtsp "{source}" --stream-idx {stream_idx} --roi-xyxy "{geofencing}"'
             elif source.startswith('http://www.youtube.com'):
-                command = f'python3 single_track.py --youtube "{source}"'
+                command = f'python3 single_track.py --youtube "{source}" --stream-idx {stream_idx} --roi-xyxy "{geofencing}"'
             elif source.rstrip() == '':
                 print('please prevent empty lines in source.streams')
                 continue
@@ -51,3 +60,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
