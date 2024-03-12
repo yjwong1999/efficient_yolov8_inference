@@ -25,6 +25,12 @@ pip install youtube-dl==2021.12.17
 python3 find_port.py
 ```
 
+## If you are doing multi-stream
+```
+1. List all the sources in source.streams
+2. If you are doing tracking + geofencing, list the geofencing roi xyxy in geofencing.streams
+```
+
 ## Install VLC player to simulate rtsp streaming
 ```
 sudo snap install vlc
