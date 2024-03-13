@@ -109,9 +109,9 @@ def predict(chosen_model, img, classes=[], conf=0.5):
    #resiz the image to 640x480
    img = cv2.resize(img, (resize_width, resize_height))
    if classes:
-       results = chosen_model.track(img, classes=classes, conf=conf, save_txt=False, persist=True)
+       results = chosen_model.track(img, classes=classes, conf=conf, save_txt=False, persist=True, verbose=False)
    else:
-       results = chosen_model.track(img, conf=conf, save_txt=False, persist=True)
+       results = chosen_model.track(img, conf=conf, save_txt=False, persist=True, verbose=False)
 
    return results
 
@@ -200,4 +200,3 @@ def main():
 
 if __name__ == "__main__":
    main()
-
