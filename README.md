@@ -80,18 +80,6 @@ python3 multi_track.py --geofencing
 - [ ] no error warning when the video source is not available, not sure this will happen for other source types onot
 - [ ] the dummy handler in multi_track.py will post() today, should post tmr only
 
-## Citation
-```
-@software{Wong_Efficient_YOLOv8_Inferencing_2024,
-  author = {Wong, Yi Jie},
-  doi = {10.5281/zenodo.10792741},
-  month = mar,
-  title = {{Efficient YOLOv8 Inferencing using Multithreading}},
-  url = {https://github.com/yjwong1999/efficient_yolov8_inference},
-  version = {1.0.0},
-  year = {2024}}
-```
-
 
 ## Acknowledgement
 1. ultralytics official repo [[ref]](https://github.com/ultralytics/ultralytics)
